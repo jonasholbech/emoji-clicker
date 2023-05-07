@@ -36,14 +36,14 @@ export const powerUps = [
     cost: 130000,
     unlocked: false,
     count: 0,
-    value: 48,
+    value: 260,
   },
   {
     name: "💯",
     cost: 1400000,
     unlocked: false,
     count: 0,
-    value: 48,
+    value: 1400,
   },
   {
     name: "🍕",
@@ -65,7 +65,7 @@ function setup() {
       el.cost = Math.ceil(el.cost * 1.2);
       observer.publish("POWERUP_BOUGHT");
     });
-    elements.store.appendChild(button);
+    elements.powerups.appendChild(button);
   });
 }
 export const update = (balance) => {

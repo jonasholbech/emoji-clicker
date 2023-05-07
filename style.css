@@ -20,17 +20,27 @@
   gap: 1rem;
 }
 #emojicount {
+  font-variant-numeric: tabular-nums;
   font-size: 4rem;
 }
 #bigemoji {
   font-size: 20rem;
   user-select: none;
 }
-#store {
+#store #upgrades {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+#store #upgrades button {
+  font-size: 1.4rem;
+  padding: 1rem;
+}
+#store #powerups {
   display: flex;
   flex-direction: column;
 }
-#store button {
+#store #powerups button {
   padding: 1rem;
   font-size: 2rem;
 }
