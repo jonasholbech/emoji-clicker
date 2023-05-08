@@ -1,10 +1,9 @@
 import { observer } from "./observer";
 import { elements, gameState } from "./config";
 import { powerUps } from "./store";
-import { withdraw } from "./bank";
+import { withdraw, addBooster } from "./bank";
 export const upgrades = [
   {
-    //TODO: type (instant || running)? boosterCallbacks on bank? an areay of callbacks to call when adding stuff?
     id: 1,
     cost: 100,
     name: "Reinforced index finger",
@@ -78,26 +77,37 @@ export const upgrades = [
   },
   {
     id: 9,
-    //TODO: 💩 skal give +1%cps for hver grandma (men ikke et one-time boost?)
     cost: 55000,
     name: "Steel-plated rolling pins",
-    description: "❤️ are <strong>twice</strong> as efficient",
+    description: "💩 gives +1%cps for each ❤️",
     key: "❤️",
     modifier: 2,
-    type: "running",
-    callback: () => {},
+    type: "powerupBooster",
+    callback: (total, powerups) => {
+      //total er cps
+      return 0;
+    },
   },
   {
     id: 10,
     //TODO: mouse and 👍 gains +0.1 for each non cursor building owned
+    //TODO: clicks er stadig ikke boostet
     cost: 100000,
     name: "Carpal tunnel prevention cream",
     description:
       "The mouse and 👍 gains +0.1 for each non cursor building owned",
     key: "👍",
     modifier: 1,
-    type: "running",
-    callback: () => {},
+    type: "powerupBooster",
+    callback: (total, powerups) => {
+      let totalCount = 0;
+      powerups.forEach((pu) => {
+        if (pu.name !== "👍") {
+          totalCount += pu.count;
+        }
+      });
+      return powerUps[0].count * (totalCount / 10);
+    },
   },
   {
     id: 11,
@@ -137,28 +147,18 @@ export const upgrades = [
   },
   {
     id: 15,
-    //TODO::
     cost: 999999,
     name: "Dunno",
     description: "Emoji production multiplier <strong>+1%</strong>",
     key: "🤗",
     modifier: 1,
-    type: "running",
-    callback: () => {},
+    type: "totalBooster",
+    callback: (total, powerups) => {
+      return (total *= 1.01);
+    },
   },
   {
     id: 16,
-    //TODO::
-    cost: 999999,
-    name: "Dunno",
-    description: "Emoji production multiplier <strong>+1%</strong>",
-    key: "🤗",
-    modifier: 1,
-    type: "running",
-    callback: () => {},
-  },
-  {
-    id: 17,
     cost: 1300000,
     name: "Dunno",
     description: "🔥 are <strong>twice</strong> as efficient",
@@ -176,15 +176,16 @@ function update() {
     const total = elements.upgrades.querySelectorAll("button").length;
 
     let btn = elements.upgrades.querySelector(
-      `button[data-id="${upgrade.cost}"]` //TODO: ny key
+      `button[data-id="${upgrade.id}"]`
     );
     if (!btn) {
       if (total < 4) {
         btn = document.createElement("button");
-        btn.textContent = upgrade.key;
-        btn.dataset.id = upgrade.cost; //TODO: duer ikke som key, ikke unik
+        btn.textContent = upgrade.key + " " + upgrade.cost;
+        btn.dataset.id = upgrade.id;
         btn.title = upgrade.description;
         btn.addEventListener("click", () => {
+          //TODO: har jeg råd?
           withdraw(upgrade.cost);
           if (upgrade.key === "👍") {
             gameState.clickValue *= 2;
@@ -192,7 +193,10 @@ function update() {
           let index = powerUps.findIndex((pu) => pu.name === upgrade.key);
           powerUps[index].value *= upgrade.modifier;
           observer.publish("POWERUP_BOUGHT");
-          let thisIndex = upgrades.findIndex((up) => up.key === upgrade.key);
+          if (upgrade.type !== "instant") {
+            addBooster(upgrade.type, upgrade.callback);
+          }
+          let thisIndex = upgrades.findIndex((up) => up.id === upgrade.id);
           upgrades.splice(thisIndex, 1);
           elements.upgrades.removeChild(btn);
         });
