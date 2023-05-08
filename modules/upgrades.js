@@ -11,6 +11,7 @@ export const upgrades = [
     description: "The mouse and 👍 are <strong>twice</strong> as efficient",
     key: "👍",
     modifier: 2,
+    type: "instant",
   },
   {
     id: 2,
@@ -19,6 +20,7 @@ export const upgrades = [
     description: "The mouse and 👍 are <strong>twice</strong> as efficient",
     key: "👍",
     modifier: 2,
+    type: "instant",
   },
   {
     id: 3,
@@ -27,6 +29,7 @@ export const upgrades = [
     description: "❤️ are <strong>twice</strong> as efficient",
     key: "❤️",
     modifier: 2,
+    type: "instant",
   },
   {
     id: 4,
@@ -35,6 +38,7 @@ export const upgrades = [
     description: "❤️ are <strong>twice</strong> as efficient",
     key: "❤️",
     modifier: 2,
+    type: "instant",
   },
   {
     id: 5,
@@ -43,6 +47,7 @@ export const upgrades = [
     description: "The mouse and 👍 are <strong>twice</strong> as efficient",
     key: "👍",
     modifier: 2,
+    type: "instant",
   },
   {
     id: 6,
@@ -51,6 +56,7 @@ export const upgrades = [
     description: "💩 are <strong>twice</strong> as efficient",
     key: "💩",
     modifier: 2,
+    type: "instant",
   },
   {
     id: 7,
@@ -59,6 +65,7 @@ export const upgrades = [
     description: "💩 are <strong>twice</strong> as efficient",
     key: "💩",
     modifier: 2,
+    type: "instant",
   },
   {
     id: 8,
@@ -67,6 +74,7 @@ export const upgrades = [
     description: "❤️ are <strong>twice</strong> as efficient",
     key: "❤️",
     modifier: 2,
+    type: "instant",
   },
   {
     id: 9,
@@ -76,6 +84,8 @@ export const upgrades = [
     description: "❤️ are <strong>twice</strong> as efficient",
     key: "❤️",
     modifier: 2,
+    type: "running",
+    callback: () => {},
   },
   {
     id: 10,
@@ -86,6 +96,8 @@ export const upgrades = [
       "The mouse and 👍 gains +0.1 for each non cursor building owned",
     key: "👍",
     modifier: 1,
+    type: "running",
+    callback: () => {},
   },
   {
     id: 11,
@@ -94,6 +106,7 @@ export const upgrades = [
     description: "💩 are <strong>twice</strong> as efficient",
     key: "💩",
     modifier: 2,
+    type: "instant",
   },
   {
     id: 12,
@@ -102,6 +115,7 @@ export const upgrades = [
     description: "💩 are <strong>twice</strong> as efficient",
     key: "💩",
     modifier: 2,
+    type: "instant",
   },
   {
     id: 13,
@@ -110,6 +124,7 @@ export const upgrades = [
     description: "💩 are <strong>twice</strong> as efficient",
     key: "💩",
     modifier: 2,
+    type: "instant",
   },
   {
     id: 14,
@@ -118,6 +133,7 @@ export const upgrades = [
     description: "🤗 are <strong>twice</strong> as efficient",
     key: "🤗",
     modifier: 2,
+    type: "instant",
   },
   {
     id: 15,
@@ -127,6 +143,8 @@ export const upgrades = [
     description: "Emoji production multiplier <strong>+1%</strong>",
     key: "🤗",
     modifier: 1,
+    type: "running",
+    callback: () => {},
   },
   {
     id: 16,
@@ -136,6 +154,8 @@ export const upgrades = [
     description: "Emoji production multiplier <strong>+1%</strong>",
     key: "🤗",
     modifier: 1,
+    type: "running",
+    callback: () => {},
   },
   {
     id: 17,
@@ -144,6 +164,7 @@ export const upgrades = [
     description: "🔥 are <strong>twice</strong> as efficient",
     key: "🔥",
     modifier: 2,
+    type: "instant",
   },
 ];
 
