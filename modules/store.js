@@ -56,7 +56,13 @@ export const powerUps = [
 function setup() {
   powerUps.forEach((el) => {
     const button = document.createElement("button");
-    button.textContent = `${el.name} ${el.cost}`;
+    const span1 = document.createElement("span");
+    const span2 = document.createElement("span");
+    span1.textContent = `${el.name} (0)`;
+    span2.textContent = el.cost;
+    button.appendChild(span1);
+    button.appendChild(span2);
+    button.title = `${el.value} per second`;
     button.dataset.id = el.name;
     button.addEventListener("click", () => {
       el.count++;
@@ -71,10 +77,11 @@ function setup() {
 export const update = (balance) => {
   powerUps.forEach((el, index) => {
     const element = document.querySelector(`#store [data-id="${el.name}"]`);
-    element.innerHTML = `${el.name} ${el.cost} (${el.count})`;
+    element.children[0].innerHTML = `${el.name} (${el.count})`;
+    element.children[1].innerHTML = ` ${el.cost}`;
 
     if (el.unlocked || powerUps[index - 1]?.count > 0 || el.cost <= balance) {
-      element.style.display = "initial";
+      element.style.display = "flex";
     } else {
       element.style.display = "none";
     }

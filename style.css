@@ -28,7 +28,8 @@
   user-select: none;
 }
 #store #upgrades {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 0.5rem;
   flex-wrap: wrap;
 }
@@ -43,6 +44,8 @@
 #store #powerups button {
   padding: 1rem;
   font-size: 2rem;
+  display: flex;
+  flex-direction: column;
 }
 #emojilist ul {
   list-style-type: none;

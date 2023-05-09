@@ -4,6 +4,7 @@ import { powerUps } from "./store";
 import { withdraw, addBooster } from "./bank";
 export const upgrades = [
   {
+    //all upgrades with "mouse" are handles in "buy"
     id: 1,
     cost: 100,
     name: "Reinforced index finger",
@@ -84,13 +85,17 @@ export const upgrades = [
     modifier: 2,
     type: "powerupBooster",
     callback: (total, powerups) => {
-      //total er cps
-      return 0;
+      const poop = powerups.find((pu) => pu.name === "💩");
+      return (
+        poop.count *
+        poop.value *
+        powerups.find((pu) => pu.name === "❤️").count *
+        0.01
+      );
     },
   },
   {
     id: 10,
-    //TODO: mouse and 👍 gains +0.1 for each non cursor building owned
     //TODO: clicks er stadig ikke boostet
     cost: 100000,
     name: "Carpal tunnel prevention cream",
@@ -154,7 +159,7 @@ export const upgrades = [
     modifier: 1,
     type: "totalBooster",
     callback: (total, powerups) => {
-      return (total *= 1.01);
+      return total * 0.01;
     },
   },
   {
