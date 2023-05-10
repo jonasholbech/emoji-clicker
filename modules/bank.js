@@ -67,7 +67,7 @@ function buildMemoizationStore() {
   totalBoosters.forEach((cb) => {
     total += cb(total, powerUps);
   });
-  memoization.total = total / gameState.framerate;
+  memoization.total = total / gameState.updatesPerSecond;
   memoization.invalid = false;
   observer.publish("CACHE_REVALIDATED", gameState.emojis);
 }
