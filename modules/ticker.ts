@@ -1,6 +1,6 @@
 import { observer } from "./observer";
 import { gameState } from "./config";
-let intervalID;
+let intervalID: string | number | NodeJS.Timer | undefined;
 
 export const ticker = {
   start: () => {
