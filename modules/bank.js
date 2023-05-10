@@ -4,11 +4,13 @@ import { powerUps } from "./store";
 import { round } from "./utils";
 const totalBoosters = [];
 const powerupBoosters = [];
+
 export const init = () => {
   observer.subscribe("TICK", x);
 };
 export const withdraw = (amount) => {
   gameState.emojis -= amount;
+  memoization.invalid = true;
   transaction();
 };
 export const deposit = (amount) => {
@@ -30,17 +32,41 @@ export const addBooster = (type, callback) => {
     powerupBoosters.push(callback);
   }
 };
+const memoization = {
+  invalid: true,
+  total: 0,
+  accumulated: {},
+};
 function x() {
+  if (memoization.invalid) {
+    console.log("recalculating store");
+    buildMemoizationStore();
+  }
+  deposit(memoization.total);
+}
+window.memoization = memoization;
+function appendToMemoizationCache(key, value) {
+  memoization.accumulated[key] += value;
+}
+function buildMemoizationStore() {
   let total = 0;
+  //reset all memoization
   powerUps.forEach((el) => {
-    total += (el.count * el.value) / (1000 / gameState.framerate);
+    memoization.accumulated[el.name] = 0;
   });
+  powerUps.forEach((el) => {
+    memoization.accumulated[el.name] += el.count * el.value;
+  });
+
+  powerupBoosters.forEach((cb) => {
+    cb(total, powerUps, appendToMemoizationCache);
+  });
+  for (const property in memoization.accumulated) {
+    total += memoization.accumulated[property];
+  }
   totalBoosters.forEach((cb) => {
     total += cb(total, powerUps);
   });
-  powerupBoosters.forEach((cb) => {
-    total += cb(total, powerUps);
-    console.log("total boosted by ", cb(total, powerUps));
-  });
-  deposit(total);
+  memoization.total = total / 10; //TODO: gamestate
+  memoization.invalid = false;
 }

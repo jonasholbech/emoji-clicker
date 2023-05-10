@@ -84,14 +84,14 @@ export const upgrades = [
     key: "❤️",
     modifier: 2,
     type: "powerupBooster",
-    callback: (total, powerups) => {
+    callback: (total, powerups, cb) => {
       const poop = powerups.find((pu) => pu.name === "💩");
-      return (
+      const boost =
         poop.count *
         poop.value *
         powerups.find((pu) => pu.name === "❤️").count *
-        0.01
-      );
+        0.01;
+      cb("💩", boost);
     },
   },
   {
@@ -104,14 +104,15 @@ export const upgrades = [
     key: "👍",
     modifier: 1,
     type: "powerupBooster",
-    callback: (total, powerups) => {
+    callback: (total, powerups, cb) => {
       let totalCount = 0;
       powerups.forEach((pu) => {
         if (pu.name !== "👍") {
           totalCount += pu.count;
         }
       });
-      return powerUps[0].count * (totalCount / 10);
+      const boost = powerUps[0].count * totalCount * 0.1;
+      cb("👍", boost);
     },
   },
   {
@@ -191,7 +192,7 @@ function update() {
         btn.title = upgrade.description;
         btn.addEventListener("click", () => {
           //TODO: har jeg råd?
-          withdraw(upgrade.cost);
+
           if (upgrade.key === "👍") {
             gameState.clickValue *= 2;
           }
@@ -204,6 +205,7 @@ function update() {
           let thisIndex = upgrades.findIndex((up) => up.id === upgrade.id);
           upgrades.splice(thisIndex, 1);
           elements.upgrades.removeChild(btn);
+          withdraw(upgrade.cost);
         });
         elements.upgrades.appendChild(btn);
       }

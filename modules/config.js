@@ -1,7 +1,7 @@
 export const version = 0.1;
 
 export const gameState = {
-  emojis: 0,
+  emojis: 100000000,
   framerate: 1000 / 10,
   clickValue: 1,
 };
