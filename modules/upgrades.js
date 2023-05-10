@@ -177,28 +177,27 @@ export const upgrades = [
 export const init = () => {
   observer.subscribe("NEW_BALANCE", update);
 };
-function update() {
+function update(total) {
   upgrades.forEach((upgrade) => {
-    const total = elements.upgrades.querySelectorAll("button").length;
+    const shownButtons = elements.upgrades.querySelectorAll("button").length;
 
     let btn = elements.upgrades.querySelector(
       `button[data-id="${upgrade.id}"]`
     );
     if (!btn) {
-      if (total < 4) {
+      if (shownButtons < 4) {
         btn = document.createElement("button");
         btn.textContent = upgrade.key + " " + upgrade.cost;
         btn.dataset.id = upgrade.id;
         btn.title = upgrade.description;
         btn.addEventListener("click", () => {
-          //TODO: har jeg råd?
+          //NOTE: har jeg råd? hvis jeg stoler på buttons disabled state er alt godt
 
           if (upgrade.key === "👍") {
             gameState.clickValue *= 2;
           }
           let index = powerUps.findIndex((pu) => pu.name === upgrade.key);
           powerUps[index].value *= upgrade.modifier;
-          //observer.publish("POWERUP_BOUGHT");
           if (upgrade.type !== "instant") {
             addBooster(upgrade.type, upgrade.callback);
           }
@@ -211,7 +210,7 @@ function update() {
       }
     }
     if (btn) {
-      btn.disabled = gameState.emojis < upgrade.cost;
+      btn.disabled = total < upgrade.cost;
     }
   });
 }

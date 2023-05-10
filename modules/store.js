@@ -69,7 +69,6 @@ function setup() {
       el.unlocked = true;
       withdraw(el.cost);
       el.cost = Math.ceil(el.cost * 1.2);
-      //observer.publish("POWERUP_BOUGHT");
     });
     elements.powerups.appendChild(button);
   });

@@ -32,7 +32,7 @@ export const addBooster = (type, callback) => {
   }
 };
 export const memoization = {
-  invalid: true,
+  invalid: false,
   total: 0,
   accumulated: {},
 };
@@ -41,6 +41,7 @@ function x() {
     console.log("recalculating store");
     buildMemoizationStore();
   }
+
   deposit(memoization.total);
 }
 window.memoization = memoization;
