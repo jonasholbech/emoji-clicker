@@ -198,7 +198,7 @@ function update() {
           }
           let index = powerUps.findIndex((pu) => pu.name === upgrade.key);
           powerUps[index].value *= upgrade.modifier;
-          observer.publish("POWERUP_BOUGHT");
+          //observer.publish("POWERUP_BOUGHT");
           if (upgrade.type !== "instant") {
             addBooster(upgrade.type, upgrade.callback);
           }

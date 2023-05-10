@@ -2,7 +2,7 @@ import { elements } from "./config";
 import { powerUps } from "./store";
 import { observer } from "./observer";
 import { round } from "./utils";
-
+import { memoization } from "./bank";
 export const init = () => {
   powerUps.forEach((pu) => {
     const li = document.createElement("li");
@@ -15,7 +15,7 @@ export const init = () => {
     li.appendChild(d2);
     elements.emojilist.appendChild(li);
   });
-  observer.subscribe("POWERUP_BOUGHT", update);
+  observer.subscribe("CACHE_REVALIDATED", update);
 };
 
 function update() {
@@ -26,7 +26,8 @@ function update() {
       );
       el.querySelector(".up").textContent = pu.name.repeat(pu.count);
       el.querySelector(".down").textContent =
-        round(pu.count * pu.value, 1) + "per second";
+        round(memoization.accumulated[pu.name], 1) + " per second";
+      //round(pu.count * pu.value, 1) + "per second";
     }
   });
 }

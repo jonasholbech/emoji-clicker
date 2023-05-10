@@ -25,14 +25,13 @@ function updateEmojis() {
   elements.emojicount.textContent = round(gameState.emojis, 1, true);
 }
 export const addBooster = (type, callback) => {
-  //TODO: de her er ens og behandles ens, hvad var ideen?
   if (type === "totalBooster") {
     totalBoosters.push(callback);
   } else if (type === "powerupBooster") {
     powerupBoosters.push(callback);
   }
 };
-const memoization = {
+export const memoization = {
   invalid: true,
   total: 0,
   accumulated: {},
@@ -67,6 +66,7 @@ function buildMemoizationStore() {
   totalBoosters.forEach((cb) => {
     total += cb(total, powerUps);
   });
-  memoization.total = total / 10; //TODO: gamestate
+  memoization.total = total / gameState.framerate;
   memoization.invalid = false;
+  observer.publish("CACHE_REVALIDATED", gameState.emojis);
 }
