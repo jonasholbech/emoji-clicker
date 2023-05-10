@@ -21,7 +21,9 @@ export const init = () => {
 function update() {
   powerUps.forEach((pu) => {
     if (pu.count > 0) {
-      const el = elements.emojilist.querySelector(`[data-emoji="${pu.name}"]`);
+      const el = elements.emojilist.querySelector(
+        `#emojilist [data-emoji="${pu.name}"]`
+      );
       el.querySelector(".up").textContent = pu.name.repeat(pu.count);
       el.querySelector(".down").textContent =
         round(pu.count * pu.value, 1) + "per second";

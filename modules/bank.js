@@ -23,6 +23,7 @@ function updateEmojis() {
   elements.emojicount.textContent = round(gameState.emojis, 1, true);
 }
 export const addBooster = (type, callback) => {
+  //TODO: de her er ens og behandles ens, hvad var ideen?
   if (type === "totalBooster") {
     totalBoosters.push(callback);
   } else if (type === "powerupBooster") {
