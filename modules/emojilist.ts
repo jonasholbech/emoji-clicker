@@ -3,8 +3,8 @@ import { powerUps } from "./store";
 import { observer } from "./observer";
 import { round } from "./utils";
 import { memoization } from "./bank";
-export const init = () => {
-  powerUps.forEach((pu) => {
+export const init = (): void => {
+  powerUps.forEach((pu): void => {
     const li = document.createElement("li");
     li.dataset.emoji = pu.name;
     const d1 = document.createElement("div");
@@ -13,7 +13,7 @@ export const init = () => {
     d2.classList.add("down");
     li.appendChild(d1);
     li.appendChild(d2);
-    elements.emojilist.appendChild(li);
+    elements.emojilist && elements.emojilist.appendChild(li);
   });
   observer.subscribe("CACHE_REVALIDATED", update);
 };

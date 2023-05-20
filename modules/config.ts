@@ -1,12 +1,23 @@
 export const version = 0.1;
 
-export const gameState = {
+export const gameState: {
+  emojis: number;
+  updatesPerSecond: number;
+  framerate: number;
+  clickValue: number;
+} = {
   emojis: 100000000,
   updatesPerSecond: 10,
   framerate: 1000 / 10, //TODO: not DRY
   clickValue: 1,
 };
-export const elements = {
+export const elements: {
+  bigemoji: HTMLElement | null;
+  emojicount: HTMLElement | null;
+  upgrades: HTMLElement | null;
+  powerups: HTMLElement | null;
+  emojilist: HTMLElement | null;
+} = {
   bigemoji: document.querySelector("#bigemoji"),
   emojicount: document.querySelector("#emojicount"),
   upgrades: document.querySelector("#upgrades"),
