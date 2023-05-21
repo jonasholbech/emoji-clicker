@@ -8,12 +8,12 @@ const powerupBoosters = [];
 export const init = () => {
   observer.subscribe("TICK", x);
 };
-export const withdraw = (amount) => {
+export const withdraw = (amount: number) => {
   gameState.emojis -= amount;
   memoization.invalid = true;
   transaction();
 };
-export const deposit = (amount) => {
+export const deposit = (amount: number) => {
   gameState.emojis += amount;
   transaction();
 };
@@ -21,8 +21,11 @@ function transaction() {
   updateEmojis();
   observer.publish("NEW_BALANCE", gameState.emojis);
 }
-function updateEmojis() {
-  elements.emojicount.textContent = round(gameState.emojis, 1, true);
+function updateEmojis(): void {
+  if (!elements.emojicound) {
+    return; //Stuipd typescript
+  }
+  elements.emojicount.textContent = round(gameState.emojis, 1, true).toString();
 }
 export const addBooster = (type, callback) => {
   if (type === "totalBooster") {
@@ -45,7 +48,7 @@ function x() {
   deposit(memoization.total);
 }
 window.memoization = memoization;
-function appendToMemoizationCache(key, value) {
+function appendToMemoizationCache(key: string, value: number) {
   memoization.accumulated[key] += value;
 }
 function buildMemoizationStore() {
