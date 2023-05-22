@@ -2,7 +2,14 @@ import { elements } from "./config";
 import { observer } from "./observer";
 import { withdraw } from "./bank";
 
-export const powerUps = [
+interface PowerUp {
+  name: string;
+  cost: number;
+  unlocked: boolean;
+  count: number;
+  value: number;
+}
+export const powerUps: PowerUp[] = [
   {
     name: "👍",
     cost: 15,
@@ -50,16 +57,16 @@ export const powerUps = [
     cost: 20000000,
     unlocked: false,
     count: 0,
-    value: 48,
+    value: 4800,
   },
 ];
-function setup() {
+function setup(): void {
   powerUps.forEach((el) => {
     const button = document.createElement("button");
     const span1 = document.createElement("span");
     const span2 = document.createElement("span");
     span1.textContent = `${el.name} (0)`;
-    span2.textContent = el.cost;
+    span2.textContent = el.cost.toString();
     button.appendChild(span1);
     button.appendChild(span2);
     button.title = `${el.value} per second`;
@@ -70,24 +77,28 @@ function setup() {
       withdraw(el.cost);
       el.cost = Math.ceil(el.cost * 1.2);
     });
-    elements.powerups.appendChild(button);
+    elements.powerups && elements.powerups.appendChild(button);
   });
 }
 export const update = (balance) => {
   powerUps.forEach((el, index) => {
-    const element = document.querySelector(`#store [data-id="${el.name}"]`);
-    element.children[0].innerHTML = `${el.name} (${el.count})`;
-    element.children[1].innerHTML = ` ${el.cost}`;
+    const element: HTMLButtonElement | null = document.querySelector(
+      `#store [data-id="${el.name}"]`
+    );
+    if (element) {
+      element.children[0].innerHTML = `${el.name} (${el.count})`;
+      element.children[1].innerHTML = ` ${el.cost}`;
 
-    if (el.unlocked || powerUps[index - 1]?.count > 0 || el.cost <= balance) {
-      element.style.display = "flex";
-    } else {
-      element.style.display = "none";
+      if (el.unlocked || powerUps[index - 1]?.count > 0 || el.cost <= balance) {
+        element.style.display = "flex";
+      } else {
+        element.style.display = "none";
+      }
+      element.disabled = el.cost >= balance;
     }
-    element.disabled = el.cost >= balance;
   });
 };
-export const init = () => {
+export const init = (): void => {
   setup();
   update(0);
   observer.subscribe("NEW_BALANCE", update);

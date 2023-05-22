@@ -27,7 +27,7 @@ function updateEmojis(): void {
   }
   elements.emojicount.textContent = round(gameState.emojis, 1, true).toString();
 }
-export const addBooster = (type, callback: Function) => {
+export const addBooster = (type: string, callback: Function) => {
   if (type === "totalBooster") {
     totalBoosters.push(callback);
   } else if (type === "powerupBooster") {

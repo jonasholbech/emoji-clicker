@@ -2,7 +2,18 @@ import { observer } from "./observer";
 import { elements, gameState } from "./config";
 import { powerUps } from "./store";
 import { withdraw, addBooster } from "./bank";
-export const upgrades = [
+
+interface Upgrade {
+  id: number;
+  cost: number;
+  name: string;
+  description: string;
+  key: string;
+  modifier: number;
+  type: string;
+  callback?: Function;
+}
+export const upgrades: Upgrade[] = [
   {
     //all upgrades with "mouse" are handles in "buy"
     id: 1,
@@ -179,36 +190,38 @@ export const init = () => {
 };
 function update(total) {
   upgrades.forEach((upgrade) => {
-    const shownButtons = elements.upgrades.querySelectorAll("button").length;
+    const shownButtons: number = elements.upgrades
+      ? elements.upgrades.querySelectorAll("button").length
+      : 0;
 
-    let btn = elements.upgrades.querySelector(
-      `button[data-id="${upgrade.id}"]`
-    );
-    if (!btn) {
-      if (shownButtons < 4) {
-        btn = document.createElement("button");
-        btn.textContent = upgrade.key + " " + upgrade.cost;
-        btn.dataset.id = upgrade.id;
-        btn.title = upgrade.description;
-        btn.addEventListener("click", () => {
-          //NOTE: har jeg råd? hvis jeg stoler på buttons disabled state er alt godt
+    let btn: HTMLButtonElement | null = elements.upgrades
+      ? elements.upgrades.querySelector(`button[data-id="${upgrade.id}"]`)
+      : null;
 
-          if (upgrade.key === "👍") {
-            gameState.clickValue *= 2;
-          }
-          let index = powerUps.findIndex((pu) => pu.name === upgrade.key);
-          powerUps[index].value *= upgrade.modifier;
-          if (upgrade.type !== "instant") {
-            addBooster(upgrade.type, upgrade.callback);
-          }
-          let thisIndex = upgrades.findIndex((up) => up.id === upgrade.id);
-          upgrades.splice(thisIndex, 1);
-          elements.upgrades.removeChild(btn);
-          withdraw(upgrade.cost);
-        });
-        elements.upgrades.appendChild(btn);
-      }
+    if (!btn && shownButtons < 4) {
+      btn = document.createElement("button");
+      btn.textContent = upgrade.key + " " + upgrade.cost;
+      btn.dataset.id = upgrade.id.toString();
+      btn.title = upgrade.description;
+      btn.addEventListener("click", () => {
+        //NOTE: har jeg råd? hvis jeg stoler på buttons disabled state er alt godt
+
+        if (upgrade.key === "👍") {
+          gameState.clickValue *= 2;
+        }
+        let index = powerUps.findIndex((pu) => pu.name === upgrade.key);
+        powerUps[index].value *= upgrade.modifier;
+        if (upgrade.type !== "instant" && upgrade.callback) {
+          addBooster(upgrade.type, upgrade.callback);
+        }
+        let thisIndex = upgrades.findIndex((up) => up.id === upgrade.id);
+        upgrades.splice(thisIndex, 1);
+        elements.upgrades && elements.upgrades.removeChild(btn as Node);
+        withdraw(upgrade.cost);
+      });
+      elements.upgrades && elements.upgrades.appendChild(btn);
     }
+
     if (btn) {
       btn.disabled = total < upgrade.cost;
     }
