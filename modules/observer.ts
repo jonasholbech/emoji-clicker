@@ -2,14 +2,14 @@ export const observer = (function () {
   "use strict";
   const events = {};
   return {
-    subscribe: function (ev, callback) {
+    subscribe: function (ev: string, callback: Function) {
       if (!events.hasOwnProperty(ev)) {
         events[ev] = [];
       }
       events[ev].push(callback);
     },
-    publish: function (ev) {
-      let data = Array.prototype.slice.call(arguments, 1);
+    publish: function (ev: string, ...data: any[]) {
+      //let data = rest;
       let index = 0;
       let length = 0;
       if (events.hasOwnProperty(ev)) {
@@ -19,7 +19,7 @@ export const observer = (function () {
         }
       }
     },
-    unsubscribe: function (ev, callback) {
+    unsubscribe: function (ev: string, callback: Function) {
       let x = events[ev].indexOf(callback);
       events[ev].splice(x, 1);
     },
