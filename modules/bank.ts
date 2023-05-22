@@ -2,18 +2,18 @@ import { observer } from "./observer";
 import { elements, gameState } from "./config";
 import { powerUps } from "./store";
 import { round } from "./utils";
-const totalBoosters = [];
-const powerupBoosters = [];
+const totalBoosters: Function[] = [];
+const powerupBoosters: Function[] = [];
 
 export const init = () => {
   observer.subscribe("TICK", x);
 };
-export const withdraw = (amount) => {
+export const withdraw = (amount: number) => {
   gameState.emojis -= amount;
   memoization.invalid = true;
   transaction();
 };
-export const deposit = (amount) => {
+export const deposit = (amount: number) => {
   gameState.emojis += amount;
   transaction();
 };
@@ -21,10 +21,13 @@ function transaction() {
   updateEmojis();
   observer.publish("NEW_BALANCE", gameState.emojis);
 }
-function updateEmojis() {
-  elements.emojicount.textContent = round(gameState.emojis, 1, true);
+function updateEmojis(): void {
+  if (!elements.emojicount) {
+    return; //Stupid typescript
+  }
+  elements.emojicount.textContent = round(gameState.emojis, 1, true).toString();
 }
-export const addBooster = (type, callback) => {
+export const addBooster = (type, callback: Function) => {
   if (type === "totalBooster") {
     totalBoosters.push(callback);
   } else if (type === "powerupBooster") {
@@ -44,8 +47,10 @@ function x() {
 
   deposit(memoization.total);
 }
+// @ts-ignores
 window.memoization = memoization;
-function appendToMemoizationCache(key, value) {
+
+function appendToMemoizationCache(key: string, value: number) {
   memoization.accumulated[key] += value;
 }
 function buildMemoizationStore() {
