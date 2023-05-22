@@ -9,7 +9,6 @@ export const observer = (function () {
       events[ev].push(callback);
     },
     publish: function (ev) {
-      //console.log("Broadcasting: ", ev);
       let data = Array.prototype.slice.call(arguments, 1);
       let index = 0;
       let length = 0;
