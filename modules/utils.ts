@@ -3,8 +3,8 @@ export const round = (
   decimals: number = 1,
   fixed: boolean = true
 ): number => {
-  const modifier = decimals * 10;
-  let total = Math.round(value * modifier) / modifier;
+  const modifier: number = decimals * 10;
+  let total: number = Math.round(value * modifier) / modifier;
   if (fixed) {
     return Number(total.toFixed(decimals));
   }
