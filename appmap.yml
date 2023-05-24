@@ -1,5 +1,0 @@
-name: emoji-clicker
-packages:
-  - path: modules
-language: javascript
-appmap_dir: tmp/appmap
